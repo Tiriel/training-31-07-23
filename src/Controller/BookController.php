@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Book\BookManager;
 use App\Entity\Book;
 use App\Entity\Comment;
 use App\Form\BookType;
@@ -60,9 +61,9 @@ class BookController extends AbstractController
         name: 'app_book_title',
         methods: ['GET'],
     )]
-    public function title(string $title, BookRepository $repository): Response
+    public function title(string $title, BookManager $bookManager): Response
     {
-        $book = $repository->findByApproxTitle($title);
+        $book = $bookManager->findByTitle($title);
 
         return $this->render('book/index.html.twig', [
             'controller_name' => 'BookController::title : '.$book->getTitle(),
