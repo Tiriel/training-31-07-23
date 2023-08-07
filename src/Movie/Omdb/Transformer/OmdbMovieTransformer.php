@@ -16,7 +16,7 @@ class OmdbMovieTransformer implements DataTransformerInterface
         'Plot',
     ];
 
-    public function transform(mixed $value): mixed
+    public function transform(mixed $value)
     {
         if (!\is_array($value) || \count(array_diff(self::KEYS, array_keys($value))) > 0) {
             throw new \InvalidArgumentException("Invalid data.");
