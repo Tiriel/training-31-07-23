@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Movie\Factory;
+namespace App\Movie\Notifier\Factory;
 
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Symfony\Component\Notifier\Notification\Notification;

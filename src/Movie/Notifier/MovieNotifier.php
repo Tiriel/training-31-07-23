@@ -2,8 +2,8 @@
 
 namespace App\Movie\Notifier;
 
-use App\Movie\Factory\ChainNotificationFactory;
-use App\Movie\Factory\NotificationFactoryInterface;
+use App\Movie\Notifier\Factory\ChainNotificationFactory;
+use App\Movie\Notifier\Factory\NotificationFactoryInterface;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 

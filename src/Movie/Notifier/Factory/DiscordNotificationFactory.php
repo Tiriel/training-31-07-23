@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Movie\Factory;
+namespace App\Movie\Notifier\Factory;
 
-use App\Movie\Notification\SlackNotification;
+use App\Movie\Notifier\Notification\DiscordNotification;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Notifier\Notification\Notification;
 
-#[AutoconfigureTag('app.notification_factory')]
-class SlackNotificationFactory implements IterableNotificationFactoryInterface
+class DiscordNotificationFactory implements IterableNotificationFactoryInterface
 {
 
     public function createNotification(string $subject): Notification
     {
-        return new SlackNotification($subject);
+        return new DiscordNotification($subject);
     }
 
     public static function getIndex(): string
     {
-        return 'slack';
+        return 'discord';
     }
 }
