@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'includes/_form_theme.html.twig' %}
+
+{% block title 'Books' %}
+
+{% block body %}
+    <div class="example-wrapper text-center">
+        <h1>New Book</h1>
+
+        {{ include('includes/_form.html.twig') }}
+    </div>
+{% endblock %}

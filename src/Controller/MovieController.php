@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\Entity\User;
 use App\Form\MovieType;
 use App\Movie\Provider\MovieProvider;
 use App\Repository\MovieRepository;
@@ -40,6 +41,9 @@ class MovieController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if (($user = $this->getUser()) instanceof User && !$movie->getId()) {
+                $movie->setCreatedBy($user);
+            }
             $manager->persist($movie);
             $manager->flush();
 

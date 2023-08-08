@@ -3,6 +3,7 @@
 namespace App\Movie\Provider;
 
 use App\Entity\Movie;
+use App\Entity\User;
 use App\Movie\Omdb\OmdbApiConsumer;
 use App\Movie\Omdb\SearchTypeEnum;
 use App\Movie\Omdb\Transformer\OmdbMovieTransformer;
@@ -48,6 +49,10 @@ class MovieProvider
 
         if ($this->security->isGranted('ROLE_ADMIN')) {
             $this->io?->note('You are performing the search as an Admin.');
+        }
+
+        if (($user = $this->security->getUser()) instanceof User) {
+            $movie->setCreatedBy($user);
         }
 
         $this->io?->text('Persisting the movie in database.');

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,6 +26,11 @@ class RegistrationFormType extends AbstractType
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
+            ])
+            ->add('birthday', BirthdayType::class, [
+                'input' => 'datetime_immutable',
+                'widget' => 'single_text',
+                'required' => false,
             ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,

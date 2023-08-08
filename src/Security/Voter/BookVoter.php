@@ -21,8 +21,7 @@ class BookVoter extends Voter
     {
         /** @var Book $subject */
         return match ($attribute) {
-            self::EDIT => true,
-            self::DELETE => $subject->getCreatedBy() === $token->getUser(),
+            self::EDIT, self::DELETE => $subject->getCreatedBy() === $token->getUser(),
             default => false
         };
     }

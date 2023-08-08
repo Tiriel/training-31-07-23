@@ -7,6 +7,7 @@ use App\Entity\Book;
 use App\Entity\User;
 use App\Form\BookType;
 use App\Repository\BookRepository;
+use App\Security\Voter\BookVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,6 +62,26 @@ class BookController extends AbstractController
     {
         return $this->render('book/index.html.twig', [
             'controller_name' => 'BookController::show - id : '.$id,
+        ]);
+    }
+
+    #[Route('/{id}/edit', name: 'app_book_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function edit(Request $request, ?Book $book, EntityManagerInterface $manager): Response
+    {
+        $this->denyAccessUnlessGranted(BookVoter::EDIT, $book);
+
+        $form = $this->createForm(BookType::class, $book);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($book);
+            $manager->flush();
+
+            return $this->redirectToRoute('app_book_show', ['id' => $book->getId()]);
+        }
+
+        return $this->render('book/edit.html.twig', [
+            'form' => $form,
         ]);
     }
 
