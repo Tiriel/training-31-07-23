@@ -7,6 +7,7 @@ use App\Movie\Omdb\OmdbApiConsumer;
 use App\Movie\Omdb\SearchTypeEnum;
 use App\Movie\Omdb\Transformer\OmdbMovieTransformer;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class MovieProvider
@@ -18,6 +19,7 @@ class MovieProvider
         private readonly OmdbApiConsumer $consumer,
         private readonly OmdbMovieTransformer $movieTransformer,
         private readonly GenreProvider $genreProvider,
+        private readonly Security $security,
     ) {}
 
     public function getMovieByTitle(string $title): Movie
@@ -42,6 +44,10 @@ class MovieProvider
         $genres = $this->genreProvider->getFromOmdbString($data['Genre']);
         foreach ($genres as $genre) {
             $movie->addGenre($genre);
+        }
+
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            $this->io?->note('You are performing the search as an Admin.');
         }
 
         $this->io?->text('Persisting the movie in database.');

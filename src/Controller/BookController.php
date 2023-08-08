@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Book\BookManager;
 use App\Entity\Book;
-use App\Entity\Comment;
+use App\Entity\User;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/book')]
 class BookController extends AbstractController
@@ -24,6 +25,7 @@ class BookController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_BOOKWORM')]
     #[Route('/new', name: 'app_book_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager): Response
     {
@@ -32,6 +34,11 @@ class BookController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if (($user = $this->getUser()) instanceof User) {
+                $book->setCreatedBy($user);
+            }
+
             $manager->persist($book);
             $manager->flush();
 
